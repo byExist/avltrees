@@ -1,10 +1,10 @@
-
-
-# avltrees
+# avltrees [![GoDoc](https://pkg.go.dev/badge/github.com/yourusername/avltrees)](https://pkg.go.dev/github.com/yourusername/avltrees) [![Go Report Card](https://goreportcard.com/badge/github.com/yourusername/avltrees)](https://goreportcard.com/report/github.com/yourusername/avltrees) 
 
 ## What is "avltrees"?
 
 `avltrees` is a generic AVL Tree implementation in Go. It supports efficient insertion, deletion, and search operations, all with O(log n) time complexity. The implementation also includes advanced operations such as rank, k-th smallest element, range queries, and predecessor/successor navigation.
+
+If your application requires frequent insertions and deletions, consider using a [Red-Black Tree](https://github.com/byExist/redblacktrees) instead, as it may offer better performance in those scenarios.
 
 ## Features
 
