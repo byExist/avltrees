@@ -1,34 +1,50 @@
-# avltrees [![GoDoc](https://pkg.go.dev/badge/github.com/yourusername/avltrees)](https://pkg.go.dev/github.com/yourusername/avltrees) [![Go Report Card](https://goreportcard.com/badge/github.com/yourusername/avltrees)](https://goreportcard.com/report/github.com/yourusername/avltrees) 
+# avltrees [![GoDoc](https://pkg.go.dev/badge/github.com/byExist/avltrees)](https://pkg.go.dev/github.com/byExist/avltrees) [![Go Report Card](https://goreportcard.com/badge/github.com/byExist/avltrees)](https://goreportcard.com/report/github.com/byExist/avltrees)
 
-## What is "avltrees"?
+A generic self-balancing AVL tree for Go with rank, k-th, and range queries.
 
-`avltrees` is a generic AVL Tree implementation in Go. It supports efficient insertion, deletion, and search operations, all with O(log n) time complexity. The implementation also includes advanced operations such as rank, k-th smallest element, range queries, and predecessor/successor navigation.
+---
 
-If your application requires frequent insertions and deletions, consider using a [Red-Black Tree](https://github.com/byExist/redblacktrees) instead, as it may offer better performance in those scenarios.
+## ✨ Features
 
-## Features
-
-- Generic support using Go generics
 - Self-balancing AVL Tree with O(log n) insert/delete/search
-- Rank and k-th element queries
-- Range iteration with inclusive/exclusive bounds
-- In-order traversal using `iter.Seq`
-- Tree size maintained at each node
+- Order-statistics support: rank, k-th element, and range queries
+- Generic (Go generics)
+- In-order iterator
+- Memory-efficient (no extra allocations on lookup)
 
-## Installation
+---
+
+## ✅ Use When
+
+- You need **fast and predictable search performance**
+- You want **rank or k-th queries**
+- Your workload is **read-heavy** or search-dominant
+
+---
+
+## 🚫 Avoid If
+
+- You need **frequent insertions and deletions** with minimal balancing overhead → use [Red-Black Tree](https://github.com/byExist/redblacktrees)
+- You need **concurrent** access (not thread-safe)
+
+---
+
+## 📦 Installation
 
 ```bash
-go get github.com/yourusername/avltrees
+go get github.com/byExist/avltrees
 ```
 
-## Quick Start
+---
+
+## 🚀 Quick Start
 
 ```go
 package main
 
 import (
 	"fmt"
-	avlt "github.com/yourusername/avltrees"
+	avlt "github.com/byExist/avltrees"
 )
 
 func main() {
@@ -37,12 +53,9 @@ func main() {
 	avlt.Insert(tree, 5, "five")
 	avlt.Insert(tree, 20, "twenty")
 
-	node, found := avlt.Search(tree, 10)
-	if found {
+	if node, found := avlt.Search(tree, 10); found {
 		fmt.Println("Found:", node.Value())
 	}
-
-	avlt.Delete(tree, 5)
 
 	for n := range avlt.InOrder(tree) {
 		fmt.Println(n.Key(), "->", n.Value())
@@ -50,38 +63,22 @@ func main() {
 }
 ```
 
-## API Overview
+---
 
-### Core Types
+## 📊 Performance
 
-- `Tree[K, V]`: The main AVL tree structure
-- `Node[K, V]`: A node in the tree
+Benchmarked on Apple M1 Pro:
 
-### Key Functions
+| Operation            | Time (ns/op) | Memory (B/op) | Allocations |
+|---------------------|--------------|----------------|-------------|
+| Insert (Random)     | 669.3        | 26 B           | 0           |
+| Insert (Sequential) | 151.6        | 64 B           | 1           |
+| Search (Hit)        | 11.52        | 0 B            | 0           |
+| Search (Miss)       | 7.58         | 0 B            | 0           |
+| Delete (Random)     | 2.90         | 0 B            | 0           |
 
-- `New[K cmp.Ordered, V any]() *Tree[K, V]`
-- `Insert(t *Tree[K, V], key K, value V) bool`
-- `Delete(t *Tree[K, V], key K) bool`
-- `Search(t *Tree[K, V], key K) (*Node[K, V], bool)`
-- `Min(t *Tree[K, V]) (*Node[K, V], bool)`
-- `Max(t *Tree[K, V]) (*Node[K, V], bool)`
-- `Rank(t *Tree[K, V], key K) int`
-- `Kth(t *Tree[K, V], k int) (*Node[K, V], bool)`
-- `InOrder(t *Tree[K, V]) iter.Seq[Node[K, V]]`
-- `Range(t *Tree[K, V], from, to K) iter.Seq[Node[K, V]]`
+---
 
-## Performance
+## 🪪 License
 
-Benchmark results measured on an Apple M1 Pro (macOS/arm64):
-
-| Benchmark               | Iterations (N) | Time per op (ns/op) | Memory (B/op) | Allocations (allocs/op) |
-|------------------------|----------------|----------------------|----------------|--------------------------|
-| Insert (Random)        | 2,123,395      | 669.3                | 26 B           | 0                        |
-| Insert (Sequential)    | 8,211,963      | 151.6                | 64 B           | 1                        |
-| Search (Hit)           | 98,068,260     | 11.52                | 0 B            | 0                        |
-| Search (Miss)          | 158,177,852    | 7.582                | 0 B            | 0                        |
-| Delete (Random)        | 388,123,057    | 2.901                | 0 B            | 0                        |
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT License. See [LICENSE](LICENSE).
